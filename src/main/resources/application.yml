@@ -3,8 +3,9 @@ spring:
     # if false, helps to develop view without restart of app
     cache: true
   datasource:
-    generate-unique-name: false
-    name: tacocloud
+    url: jdbc:postgresql://localhost:5432/tacocloud
+    username: user
+    password: password
   jpa:
     show-sql: true
 

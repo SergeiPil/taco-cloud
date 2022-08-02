@@ -1,7 +1,10 @@
 package com.piliugin.tacocloud.repository;
 
 import com.piliugin.tacocloud.model.order.TacoOrder;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface OrderRepository {
-    TacoOrder save(TacoOrder tacoOrder);
+@Repository
+public interface OrderRepository extends CrudRepository<TacoOrder, String> {
+
 }

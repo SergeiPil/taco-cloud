@@ -1,25 +1,29 @@
 package com.piliugin.tacocloud.config;
 
+import com.piliugin.tacocloud.model.Ingredient;
+import com.piliugin.tacocloud.model.Ingredient.Type;
 import com.piliugin.tacocloud.repository.IngredientRepository;
-import com.piliugin.tacocloud.repository.JdbcIngredientRepository;
-import com.piliugin.tacocloud.repository.JdbcOrderRepository;
-import com.piliugin.tacocloud.repository.OrderRepository;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 @Configuration
 public class TacoCloudConfig {
 
     @Bean
-    public IngredientRepository ingredientRepository(JdbcTemplate jdbcTemplate) {
-        return new JdbcIngredientRepository(jdbcTemplate);
-    }
-
-    @Bean
-    public OrderRepository orderRepository(JdbcOperations jdbcOperations) {
-        return new JdbcOrderRepository(jdbcOperations);
+    public CommandLineRunner dataLoader(IngredientRepository repo) {
+        return args -> {
+            repo.save(new Ingredient("FLTO", "Flour Tortilla", Type.WRAP));
+            repo.save(new Ingredient("COTO", "Corn Tortilla", Type.WRAP));
+            repo.save(new Ingredient("GRBF", "Ground Beef", Type.PROTEIN));
+            repo.save(new Ingredient("CARN", "Carnitas", Type.PROTEIN));
+            repo.save(new Ingredient("TMTO", "Diced Tomatoes", Type.VEGGIES));
+            repo.save(new Ingredient("LETC", "Lettuce", Type.VEGGIES));
+            repo.save(new Ingredient("CHED", "Cheddar", Type.CHEESE));
+            repo.save(new Ingredient("JACK", "Monterrey Jack", Type.CHEESE));
+            repo.save(new Ingredient("SLSA", "Salsa", Type.SAUCE));
+            repo.save(new Ingredient("SRCR", "Sour Cream", Type.SAUCE));
+        };
     }
 
 }

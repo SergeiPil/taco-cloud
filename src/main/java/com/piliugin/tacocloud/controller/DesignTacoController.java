@@ -6,13 +6,14 @@ import com.piliugin.tacocloud.model.Taco;
 import com.piliugin.tacocloud.model.order.TacoOrder;
 import com.piliugin.tacocloud.repository.IngredientRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,6 +60,7 @@ public class DesignTacoController {
         if (errors.hasErrors()) {
             return "design";
         }
+        taco.setCreatedAt(Date.from(Instant.now()));
         tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
 
