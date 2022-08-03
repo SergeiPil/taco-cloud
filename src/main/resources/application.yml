@@ -1,20 +1,25 @@
 spring:
+  data:
+    cassandra:
+      keyspace-name: tacocloud
+      schema-action: recreate
+      local-datacenter: datacenter1
   thymeleaf:
     # if false, helps to develop view without restart of app
     cache: true
-  datasource:
-    generate-unique-name: false
-    username: user
-    password: password
-    url: jdbc:postgresql://localhost:5432/tacocloud
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.PostgreSQL81Dialect
+#  datasource:
+#    generate-unique-name: false
+#    username: user
+#    password: password
+#    url: jdbc:postgresql://localhost:5432/tacocloud
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: create
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.PostgreSQL81Dialect
 
 logging:
   level:

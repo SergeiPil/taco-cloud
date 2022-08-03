@@ -1,22 +1,32 @@
 package com.piliugin.tacocloud.model;
 
+import com.datastax.oss.driver.api.core.uuid.Uuids;
+import com.piliugin.tacocloud.converter.TacoUDRUtils;
+import com.piliugin.tacocloud.model.udt.IngredientUDT;
 import lombok.Data;
+import org.springframework.data.cassandra.core.cql.Ordering;
+import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
+import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
+import org.springframework.data.cassandra.core.mapping.Table;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
-@Entity
+@Table("tacos")
 public class Taco {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @PrimaryKeyColumn(type = PrimaryKeyType.PARTITIONED)
+    private UUID id = Uuids.timeBased();
 
+    @PrimaryKeyColumn(type = PrimaryKeyType.CLUSTERED,
+            ordering = Ordering.DESCENDING)
     private Date createdAt;
 
     @NotNull
@@ -24,11 +34,11 @@ public class Taco {
     private String name;
     @NotNull
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    @ManyToMany(targetEntity=Ingredient.class)
-    private List<Ingredient> ingredients = new ArrayList<>();
+    @Column("ingredients")
+    private List<IngredientUDT> ingredients = new ArrayList<>();
 
-    @PrePersist
-    void createdAt() {
-        this.createdAt = new Date();
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(TacoUDRUtils.toIngredientUDT(ingredient));
     }
+
 }

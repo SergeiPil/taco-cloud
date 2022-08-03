@@ -4,6 +4,7 @@ import com.piliugin.tacocloud.model.Ingredient;
 import com.piliugin.tacocloud.model.Ingredient.Type;
 import com.piliugin.tacocloud.model.Taco;
 import com.piliugin.tacocloud.model.order.TacoOrder;
+import com.piliugin.tacocloud.model.udt.TacoUDT;
 import com.piliugin.tacocloud.repository.IngredientRepository;
 import com.piliugin.tacocloud.repository.TacoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.sql.Date;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,8 +67,8 @@ public class DesignTacoController {
         if (errors.hasErrors()) {
             return "design";
         }
-        Taco saved = tacoRepository.save(taco);
-        tacoOrder.addTaco(saved);
+        taco.setCreatedAt(Date.from(Instant.now()));
+        tacoOrder.addTaco(new TacoUDT(taco.getName(), taco.getIngredients()));
         log.info("Processing taco: {}", taco);
 
         return "redirect:/orders/current";
