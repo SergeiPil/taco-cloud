@@ -4,9 +4,17 @@ spring:
     cache: true
   datasource:
     generate-unique-name: false
-    name: tacocloud
+    username: user
+    password: password
+    url: jdbc:postgresql://localhost:5432/tacocloud
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQL81Dialect
 
 logging:
   level:
