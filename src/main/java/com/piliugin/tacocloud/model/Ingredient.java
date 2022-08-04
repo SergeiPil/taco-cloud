@@ -1,15 +1,13 @@
 package com.piliugin.tacocloud.model;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Entity
+@Document(collection = "ingredients")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient {
