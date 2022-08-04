@@ -5,9 +5,7 @@ import com.piliugin.tacocloud.model.Ingredient.Type;
 import com.piliugin.tacocloud.model.Taco;
 import com.piliugin.tacocloud.model.order.TacoOrder;
 import com.piliugin.tacocloud.repository.IngredientRepository;
-import com.piliugin.tacocloud.repository.TacoRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -25,11 +23,9 @@ import java.util.stream.Collectors;
 public class DesignTacoController {
 
     private final IngredientRepository ingredientRepository;
-    private final TacoRepository tacoRepository;
 
-    public DesignTacoController(IngredientRepository ingredientRepository, TacoRepository tacoRepository) {
+    public DesignTacoController(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
-        this.tacoRepository = tacoRepository;
     }
 
     @ModelAttribute
@@ -64,8 +60,7 @@ public class DesignTacoController {
         if (errors.hasErrors()) {
             return "design";
         }
-        Taco saved = tacoRepository.save(taco);
-        tacoOrder.addTaco(saved);
+        tacoOrder.addTaco(taco);
         log.info("Processing taco: {}", taco);
 
         return "redirect:/orders/current";
