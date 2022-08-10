@@ -5,6 +5,18 @@ spring:
 #  data:
 #    mongodb:
 #      database: tacoclouddb
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 320532025645-b0tqf0c6j200kkb3uf5ho1bne7pfveip.apps.googleusercontent.com
+            client-secret: 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
+            client-name: taco-client
+            redirect-uri: http://localhost:8080/login/oauth2/code/google
+            scope:
+              - email
+              - profile
   datasource:
     generate-unique-name: false
     username: user
@@ -13,7 +25,7 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true

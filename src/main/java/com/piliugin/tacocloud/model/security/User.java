@@ -1,6 +1,9 @@
 package com.piliugin.tacocloud.model.security;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +26,7 @@ public class User implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+
     private final String username;
     private final String password;
     private final String fullName;
@@ -34,9 +38,11 @@ public class User implements UserDetails, Serializable {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (username.endsWith("_admin")) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
-
 
     @Override
     public boolean isAccountNonExpired() {

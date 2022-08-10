@@ -4,6 +4,8 @@ import com.piliugin.tacocloud.model.security.User;
 import com.piliugin.tacocloud.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-public class SecurityConfig {
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class SecurityConfig extends GlobalMethodSecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,8 +35,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf()
-                .disable()
                 .authorizeRequests()
                 .antMatchers("/design", "/orders").access("hasRole('USER')")
                 .antMatchers("/", "/**").access("permitAll")
@@ -41,6 +42,12 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/design")
+
 
                 .and()
                 .logout()
